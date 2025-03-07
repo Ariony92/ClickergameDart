@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class HomeView extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/game'); // redirection vers le jeu
+                  Navigator.pushNamed(context, '/clicker_game');
                 },
                 child: const Text("Jouer"),
               ),

@@ -1,15 +1,27 @@
+import 'dart:ui';
+
 class EnnemiModele {
   final String nom;
   final int vieTotale;
   final int niveau;
+  final String image;
+  final int attackPower;
   late int vieActuelle;
+  Offset position;
 
   EnnemiModele({
     required this.nom,
     required this.vieTotale,
     required this.niveau,
+    required this.image,
+    required this.attackPower,
+    required this.position,
   }) {
     vieActuelle = vieTotale;
+  }
+
+  void mettreAJourPosition(Offset nouvellePosition) {
+    position = nouvellePosition;
   }
 
   void reduirePV(int degats) {
@@ -24,16 +36,27 @@ class EnnemiModele {
     vieActuelle = vieTotale;
   }
 
-  // récompense XP pour chaque enemis tué
   int recompenseExperience() {
     return niveau * 10;
   }
 
   factory EnnemiModele.fromJson(Map<String, dynamic> json) {
+    String imagePath = json['image'] ?? '';
+
+    String finalImagePath;
+    if (imagePath.startsWith('assets/')) {
+      finalImagePath = imagePath;
+    } else {
+      finalImagePath = "http://localhost/api_flutter/$imagePath";
+    }
+
     return EnnemiModele(
       nom: json['name'] ?? '',
-      vieTotale: json['totalLife'] ?? 100,
+      vieTotale: json['total_life'] ?? 100,
       niveau: json['level'] ?? 1,
+      image: finalImagePath,
+      attackPower: json['attack_power'] ?? 10,
+      position: Offset(100, 100),
     );
   }
 }

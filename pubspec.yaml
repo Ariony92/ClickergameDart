@@ -56,6 +56,13 @@ dev_dependencies:
 flutter:
   assets:
     - assets/background_HomePage.png
+    - assets/enemies/creaper.png
+    - assets/mystery.png
+    - assets/mort.png
+    - assets/joueur.png
+    - assets/background_game.png
+    - assets/enemies/chevalier.png
+    - assets/enemies/ogre.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

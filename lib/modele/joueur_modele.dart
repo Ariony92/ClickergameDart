@@ -1,54 +1,48 @@
-import 'package:clicker/core/enums/enum_amelioration.dart';
-import 'amelioration_joueur_modele.dart';
-
-
 class JoueurModele {
   int experience;
   int degats;
   int experienceParClic;
+  int vieMax;
+  int vieActuelle;
 
   JoueurModele({
     this.experience = 0,
     this.degats = 1,
     this.experienceParClic = 5,
-  });
+    this.vieMax = 100,
+  }) : vieActuelle = vieMax;
 
   void ajouterExperience(int xp) {
     experience += xp;
   }
 
-  // inflige des dégâts et gagne de l'expérience retourne les dégats infligé
   int cliquer() {
     ajouterExperience(experienceParClic);
     return degats;
   }
 
-  // Permet d'augmenter les dégâts de base en dépensant de l'expérience.
-  int augmenterDegats() {
-    int coutDegats = degats * 10;
-    if (experience >= coutDegats) {
-      experience -= coutDegats;
+  int ameliorerDegats() {
+    int cout = (degats + 1) * 10;
+    if (experience >= cout) {
+      experience -= cout;
       degats++;
       return degats;
     }
     return -1;
   }
 
-  // Permet au joueur d'acheter une amélioration si l'amélioration est dégat, on augmente degats et pareil pour les EXP
-  int acheterAmelioration(AmeliorationJoueur amelioration) {
-    int cout = amelioration.coutActuel;
-    if (experience >= cout) {
-      experience -= cout;
-      if (amelioration.typeAmelioration == ameliorationType.degats) {
-        degats += amelioration.effet;
-        amelioration.ameliorer();
-        return degats;
-      } else if (amelioration.typeAmelioration == ameliorationType.experiencegagner) {
-        experienceParClic += amelioration.effet;
-        amelioration.ameliorer();
-        return experienceParClic;
-      }
-    }
-    return -1;
+  void prendreDegats(int degatsRecus) {
+    vieActuelle = (vieActuelle - degatsRecus).clamp(0, vieMax);
+  }
+
+  void reinitialiser() {
+    experience = 0;
+    degats = 1;
+    experienceParClic = 5;
+    vieActuelle = vieMax;
+  }
+
+  bool estMort() {
+    return vieActuelle <= 0;
   }
 }
