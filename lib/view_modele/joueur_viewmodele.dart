@@ -22,6 +22,15 @@ class JoueurViewModel extends ChangeNotifier {
     return nouveauDegats;
   }
 
+  void attaquerJoueur(int degats) {
+    _joueur.vieActuelle -= degats;
+    notifyListeners();
+  }
+
+  bool estMort() {
+    return vieActuelle <= 0;
+  }
+
   int coutAmeliorationDegats() {
     notifyListeners();
     return _joueur.cout();
@@ -32,9 +41,19 @@ class JoueurViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void ajouterVie(int pv) {
+    if (_joueur.vieActuelle + pv < _joueur.vieMax) {
+      _joueur.vieActuelle += pv;
+    } else {
+      _joueur.vieActuelle = _joueur.vieMax;
+    }
+    notifyListeners();
+  }
+
   void reinitialiserJoueur() {
     _joueur.experience = 0;
-    _joueur.degats = 1; // Ou la valeur de départ que tu veux
+    _joueur.degats = 1;
+    _joueur.vieActuelle = _joueur.vieMax;
     notifyListeners();
   }
 }

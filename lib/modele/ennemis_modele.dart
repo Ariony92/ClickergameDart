@@ -40,6 +40,10 @@ class EnnemiModele {
     return niveau * 10;
   }
 
+  int ptAttaque() {
+    return attackPower;
+  }
+
   factory EnnemiModele.fromJson(Map<String, dynamic> json) {
     String imagePath = json['image'] ?? '';
 

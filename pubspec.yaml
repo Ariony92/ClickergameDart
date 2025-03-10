@@ -63,6 +63,11 @@ flutter:
     - assets/background_game.png
     - assets/enemies/chevalier.png
     - assets/enemies/ogre.png
+    - assets/enemies/Ryuk.png
+    - assets/enemies/Malenia_Elden_Ring.png
+    - assets/enemies/Richard_Saison_3.png
+    - assets/enemies/Aatrox_Render.png
+    - assets/enemies/Accuratelich.png
     - assets/enemies/aurelien.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

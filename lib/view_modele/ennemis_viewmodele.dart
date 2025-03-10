@@ -34,7 +34,6 @@ class EnnemisViewModele extends ChangeNotifier {
         }
       } else {
         print("Erreur API : Code ${response.statusCode}");
-        
       }
     } catch (e) {
       print("erreur lors du chargement de l'ennemi : $e");
@@ -46,10 +45,15 @@ class EnnemisViewModele extends ChangeNotifier {
     if (ennemiActuel != null) {
       ennemiActuel!.reduirePV(degats);
       joueurViewModel.ajouterExperience(joueurViewModel.experienceParClic);
+      joueurViewModel.attaquerJoueur(ennemiActuel!.ptAttaque());
 
       if (ennemiActuel!.estMort()) {
         niveauActuel++;
+        joueurViewModel.ajouterVie(50);
         chargerEnnemi();
+      }
+      if (joueurViewModel.estMort()) {
+        _afficherMessageFin(context);
       }
       notifyListeners();
     } else {
@@ -66,8 +70,7 @@ class EnnemisViewModele extends ChangeNotifier {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Félicitations !"),
-          content: Text("Tu as fini le jeu"),
+          content: Text("Fin de Jeu"),
           actions: [
             TextButton(
               onPressed: () {
