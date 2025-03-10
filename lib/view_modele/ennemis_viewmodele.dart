@@ -23,20 +23,20 @@ class EnnemisViewModele extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print("Réponse API : $data");
+        //print("Réponse API : $data");
 
         if (data.isNotEmpty) {
           ennemiActuel = EnnemiModele.fromJson(data[0]);
           notifyListeners();
         } else {
-          print("Aucun ennemi trouvé pour le niveau $niveauActuel");
+          //print("Aucun ennemi trouvé pour le niveau $niveauActuel");
           ennemiActuel = null;
         }
       } else {
-        print("Erreur API : Code ${response.statusCode}");
+        //print("Erreur API : Code ${response.statusCode}");
       }
     } catch (e) {
-      print("erreur lors du chargement de l'ennemi : $e");
+      //print("erreur lors du chargement de l'ennemi : $e");
     }
   }
 
