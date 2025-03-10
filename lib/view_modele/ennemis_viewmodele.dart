@@ -16,9 +16,10 @@ class EnnemisViewModele extends ChangeNotifier {
     chargerEnnemi();
   }
 
-    Future<void> chargerEnnemi() async {
+  Future<void> chargerEnnemi() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost/api_flutter/get_enemies.php?level=$niveauActuel'));
+      final response = await http.get(Uri.parse(
+          'http://localhost/api_flutter/get_enemies.php?level=$niveauActuel'));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -29,72 +30,73 @@ class EnnemisViewModele extends ChangeNotifier {
           notifyListeners();
         } else {
           print("Aucun ennemi trouvé pour le niveau $niveauActuel");
+          ennemiActuel = null;
         }
       } else {
         print("Erreur API : Code ${response.statusCode}");
+        
       }
     } catch (e) {
       print("erreur lors du chargement de l'ennemi : $e");
     }
   }
 
-
-  void attaquerEnnemi(int degats, JoueurViewModel joueurViewModel, BuildContext context) {
+  void attaquerEnnemi(
+      int degats, JoueurViewModel joueurViewModel, BuildContext context) {
     if (ennemiActuel != null) {
       ennemiActuel!.reduirePV(degats);
       joueurViewModel.ajouterExperience(joueurViewModel.experienceParClic);
 
       if (ennemiActuel!.estMort()) {
-        if (niveauActuel >= 4) {
-          _afficherMessageFin(context);
-        } else {
-          niveauActuel++;
-          chargerEnnemi();
-        }
+        niveauActuel++;
+        chargerEnnemi();
       }
+      notifyListeners();
+    } else {
+      _afficherMessageFin(context);
       notifyListeners();
     }
   }
+
   void _afficherMessageFin(BuildContext context) {
-  final joueurViewModel = Provider.of<JoueurViewModel>(context, listen: false);
+    final joueurViewModel =
+        Provider.of<JoueurViewModel>(context, listen: false);
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Félicitations !"),
-        content: Text("Tu as fini le jeu"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              _resetGame(joueurViewModel); // Réinitialiser le jeu et le joueur
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeView()),
-                (Route<dynamic> route) => false, // Supprime toutes les pages précédentes
-              );
-            },
-            child: Text("OK"),
-          ),
-        ],
-      );
-    },
-  );
-}
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Félicitations !"),
+          content: Text("Tu as fini le jeu"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _resetGame(
+                    joueurViewModel); // Réinitialiser le jeu et le joueur
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeView()),
+                  (Route<dynamic> route) =>
+                      false, // Supprime toutes les pages précédentes
+                );
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
+  void _resetGame(JoueurViewModel joueurViewModel) {
+    // Réinitialisation des ennemis
+    niveauActuel = 1;
+    ennemiActuel = null;
+    chargerEnnemi();
 
-void _resetGame(JoueurViewModel joueurViewModel) {
-  // Réinitialisation des ennemis
-  niveauActuel = 1;
-  ennemiActuel = null;
-  chargerEnnemi();
+    // Réinitialisation du joueur
+    joueurViewModel.reinitialiserJoueur();
 
-  // Réinitialisation du joueur
-  joueurViewModel.reinitialiserJoueur();
-
-  notifyListeners();
-}
-
-
-
+    notifyListeners();
+  }
 }
