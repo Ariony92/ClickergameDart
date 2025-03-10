@@ -39,7 +39,16 @@ class _ClickerGameViewState extends State<ClickerGameView> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 15),
+                    
+                    Text(
+                      ennemisViewModel.ennemiActuel!.nom,
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    SizedBox(height: 15),
 
                     // Barre de vie de l'ennemi
                     Container(
