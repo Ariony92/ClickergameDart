@@ -114,8 +114,9 @@ class _ClickerGameViewState extends State<ClickerGameView> {
                     );
                   }
                 },
-                child: Text("Améliorer dégâts"),
+                child: Text("Améliorer dégâts (${joueurViewModel.coutAmeliorationDegats()} XP)"),
               ),
+
             ],
           ),
         ),

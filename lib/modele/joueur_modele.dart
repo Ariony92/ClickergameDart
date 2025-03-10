@@ -31,6 +31,10 @@ class JoueurModele {
     return -1;
   }
 
+  int cout() {
+    return (degats + 1) * 10;
+  }
+
   void prendreDegats(int degatsRecus) {
     vieActuelle = (vieActuelle - degatsRecus).clamp(0, vieMax);
   }

@@ -22,8 +22,19 @@ class JoueurViewModel extends ChangeNotifier {
     return nouveauDegats;
   }
 
+  int coutAmeliorationDegats() {
+    notifyListeners();
+    return _joueur.cout();
+  }
+
   void ajouterExperience(int xp) {
     _joueur.ajouterExperience(xp);
+    notifyListeners();
+  }
+
+  void reinitialiserJoueur() {
+    _joueur.experience = 0;
+    _joueur.degats = 1; // Ou la valeur de départ que tu veux
     notifyListeners();
   }
 }

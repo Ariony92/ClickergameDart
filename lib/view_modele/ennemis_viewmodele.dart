@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../core/services/api_service.dart';
 import '../modele/ennemis_modele.dart';
 import 'joueur_viewmodele.dart';
+import '../vue/home_view.dart';
 
 class EnnemisViewModele extends ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -43,7 +45,7 @@ class EnnemisViewModele extends ChangeNotifier {
       joueurViewModel.ajouterExperience(joueurViewModel.experienceParClic);
 
       if (ennemiActuel!.estMort()) {
-        if (niveauActuel >= 3) {
+        if (niveauActuel >= 4) {
           _afficherMessageFin(context);
         } else {
           niveauActuel++;
@@ -54,22 +56,45 @@ class EnnemisViewModele extends ChangeNotifier {
     }
   }
   void _afficherMessageFin(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Félicitations !"),
-          content: Text("Tu as fini le jeu"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  final joueurViewModel = Provider.of<JoueurViewModel>(context, listen: false);
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Félicitations !"),
+        content: Text("Tu as fini le jeu"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _resetGame(joueurViewModel); // Réinitialiser le jeu et le joueur
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeView()),
+                (Route<dynamic> route) => false, // Supprime toutes les pages précédentes
+              );
+            },
+            child: Text("OK"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+void _resetGame(JoueurViewModel joueurViewModel) {
+  // Réinitialisation des ennemis
+  niveauActuel = 1;
+  ennemiActuel = null;
+  chargerEnnemi();
+
+  // Réinitialisation du joueur
+  joueurViewModel.reinitialiserJoueur();
+
+  notifyListeners();
+}
+
+
+
 }
