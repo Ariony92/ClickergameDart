@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_modele/ennemis_viewmodele.dart';
 import '../view_modele/joueur_viewmodele.dart';
+import '../widgets/enemy_widget.dart';
 
 class ClickerGameView extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _ClickerGameViewState extends State<ClickerGameView> {
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/background_game.png"),
             fit: BoxFit.cover,
@@ -28,88 +29,18 @@ class _ClickerGameViewState extends State<ClickerGameView> {
         ),
         child: Center(
           child: ennemisViewModel.ennemiActuel == null
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Niveau ${ennemisViewModel.niveauActuel}",
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(height: 15),
-                    
-                    Text(
-                      ennemisViewModel.ennemiActuel!.nom,
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    SizedBox(height: 15),
-
-                    // Barre de vie de l'ennemi
-                    Container(
-                      width: 200,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey[300],
-                      ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: (ennemisViewModel.ennemiActuel!.vieActuelle /
-                                ennemisViewModel.ennemiActuel!.vieTotale)
-                            .clamp(0.0, 1.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 10),
 
-                    Text(
-                      "PV Ennemi : ${ennemisViewModel.ennemiActuel!.vieActuelle} / ${ennemisViewModel.ennemiActuel!.vieTotale}",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-
-                    GestureDetector(
-                      onTap: () {
-                        int degatsInfliges = joueurViewModel.cliquer();
-                        ennemisViewModel.attaquerEnnemi(
-                            degatsInfliges, joueurViewModel, context);
-                      },
-                      child: ennemisViewModel.ennemiActuel!.image
-                              .startsWith("assets/")
-                          ? Image.asset(
-                              ennemisViewModel.ennemiActuel!.image,
-                              width: 200,
-                              height: 200,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Text("Erreur chargement image");
-                              },
-                            )
-                          : Image.network(
-                              ennemisViewModel.ennemiActuel!.image,
-                              width: 200,
-                              height: 200,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Text("Erreur chargement image");
-                              },
-                            ),
-                    ),
-
+                    // Affichage de l'ennemi avec EnemyWidget
+                    EnemyWidget(),
                     const SizedBox(height: 30),
 
                     // Barre de vie du joueur
-                    Text(
+                    const Text(
                       "Votre Vie",
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -136,18 +67,18 @@ class _ClickerGameViewState extends State<ClickerGameView> {
                     const SizedBox(height: 10),
                     Text(
                       "PV : ${joueurViewModel.vieActuelle} / ${joueurViewModel.vieMax}",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
 
                     const SizedBox(height: 20),
 
                     Text(
                       "Expérience : ${joueurViewModel.experience}",
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     Text(
                       "Dégâts par clic : ${joueurViewModel.degats}",
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 10),
 
@@ -156,7 +87,7 @@ class _ClickerGameViewState extends State<ClickerGameView> {
                         int result = joueurViewModel.ameliorerDegats();
                         if (result == -1) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("Pas assez d'expérience !"),
                               duration: Duration(seconds: 1),
                             ),
@@ -164,7 +95,8 @@ class _ClickerGameViewState extends State<ClickerGameView> {
                         }
                       },
                       child: Text(
-                          "Améliorer dégâts (${joueurViewModel.coutAmeliorationDegats()} XP)"),
+                        "Améliorer dégâts (${joueurViewModel.coutAmeliorationDegats()} XP)",
+                      ),
                     ),
                   ],
                 ),
