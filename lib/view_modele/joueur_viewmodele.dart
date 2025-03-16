@@ -31,8 +31,11 @@ class JoueurViewModel extends ChangeNotifier {
     return vieActuelle <= 0;
   }
 
-  int coutAmeliorationDegats() {
-    notifyListeners();
+   int coutAmeliorationDegats() {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) { //par ChatGpt car y avais un bug sur le de+nug consol
+      notifyListeners();
+    });
     return _joueur.cout();
   }
 
