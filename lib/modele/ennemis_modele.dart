@@ -45,22 +45,22 @@ class EnnemiModele {
   }
 
   factory EnnemiModele.fromJson(Map<String, dynamic> json) {
-    String imagePath = json['image'] ?? '';
+  String imagePath = json['image'] ?? '';
 
-    String finalImagePath;
-    if (imagePath.startsWith('assets/')) {
-      finalImagePath = imagePath;
-    } else {
-      finalImagePath = "http://localhost/api_flutter/$imagePath";
-    }
-
-    return EnnemiModele(
-      nom: json['name'] ?? '',
-      vieTotale: json['total_life'] ?? 100,
-      niveau: json['level'] ?? 1,
-      image: finalImagePath,
-      attackPower: json['attack_power'] ?? 10,
-      position: Offset(100, 100),
-    );
+  String finalImagePath;
+  if (imagePath.startsWith('assets/')) {
+    finalImagePath = imagePath;
+  } else {
+    finalImagePath = "http://localhost/api_flutter/$imagePath";
   }
+
+  return EnnemiModele(
+    nom: json['name'] ?? '',
+    vieTotale: int.parse(json['total_life'].toString()), 
+    niveau: int.parse(json['level'].toString()), 
+    image: finalImagePath,
+    attackPower: int.parse(json['attack_power'].toString()), 
+    position: Offset(100, 100),
+  );
+}
 }
